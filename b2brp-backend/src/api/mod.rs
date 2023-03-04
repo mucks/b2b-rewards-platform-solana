@@ -1,10 +1,11 @@
 mod dto;
+pub mod private_api;
+pub mod public_api;
 
 use self::dto::{LoginDto, SignUpDto};
 use crate::db::{models_create::CreateUser, DbConn, DbPool};
 use actix_web::{error::ErrorInternalServerError, web, FromRequest};
 use anyhow::{anyhow, Result};
-use base64::{engine::general_purpose, Engine as _};
 use diesel::prelude::*;
 use diesel::{QueryDsl, RunQueryDsl};
 use hmac::digest::KeyInit;
@@ -24,14 +25,17 @@ impl Api {
         Ok(Self { conn: pool.get()? })
     }
 
-    fn hash_password(password: &str, salt: &[u8; 32]) -> Result<String> {
+    fn hash_password(password: &str) -> Result<String> {
+        // INFO: Argon2 stores salt with hash so we don't need to store it separately
+
+        let salt: [u8; 32] = rand::thread_rng().gen();
         let config = argon2::Config::default();
-        let pw = argon2::hash_encoded(password.as_bytes(), salt, &config)?;
+        let pw = argon2::hash_encoded(password.as_bytes(), &salt, &config)?;
         Ok(pw)
     }
 
-    fn verify_password(password: &str, hash: &str, salt: &[u8]) -> Result<bool> {
-        let is_valid = argon2::verify_encoded_ext(hash, password.as_bytes(), salt, &[])?;
+    fn verify_password(password: &str, hash: &str) -> Result<bool> {
+        let is_valid = argon2::verify_encoded(hash, password.as_bytes())?;
         Ok(is_valid)
     }
 
@@ -40,8 +44,7 @@ impl Api {
             .filter(crate::schema::User::email.eq(dto.email))
             .first::<crate::db::models::User>(&mut self.conn)?;
 
-        let salt = general_purpose::STANDARD_NO_PAD.decode(user.salt.as_bytes())?;
-        let is_valid = Self::verify_password(&dto.password, &user.password, &salt)?;
+        let is_valid = Self::verify_password(&dto.password, &user.password)?;
 
         if !is_valid {
             return Err(anyhow!("Invalid password"));
@@ -57,14 +60,12 @@ impl Api {
     }
 
     pub fn sign_up(&mut self, dto: &SignUpDto) -> Result<()> {
-        let salt: [u8; 32] = rand::thread_rng().gen();
-        let hashed_pw = Self::hash_password(&dto.password, &salt)?;
+        let hashed_pw = Self::hash_password(&dto.password)?;
 
         let create_user = CreateUser {
             email: dto.email.clone(),
             name: dto.name.clone(),
             password: hashed_pw,
-            salt: general_purpose::STANDARD_NO_PAD.encode(salt),
         };
 
         diesel::insert_into(crate::schema::User::table)

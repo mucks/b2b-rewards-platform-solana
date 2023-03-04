@@ -12,5 +12,4 @@ pub struct CreateUser {
     pub email: String,
     pub name: String,
     pub password: String,
-    pub salt: String,
 }

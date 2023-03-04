@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SignUpDto {
-    pub email: String,
     pub name: String,
+    pub email: String,
     pub password: String,
 }
 
