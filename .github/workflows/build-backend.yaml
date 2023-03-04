@@ -7,11 +7,11 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Create and publish a Docker image
+name: Build backend and push to GitHub Container Registry
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
     paths:
       - "b2brp-backend/**"
       - ".github/workflows/build-backend.yaml"
