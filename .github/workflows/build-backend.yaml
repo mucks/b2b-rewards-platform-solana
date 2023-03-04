@@ -18,7 +18,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: b2brp-backend
+  IMAGE_NAME: mucks/b2brp-backend
 
 jobs:
   build-and-push-image:
