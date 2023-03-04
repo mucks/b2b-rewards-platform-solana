@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: b2brp-backend-svc
+  namespace: b2brp
+spec:
+  selector:
+    app: b2brp-backend
+  ports:
+    - port: 4000

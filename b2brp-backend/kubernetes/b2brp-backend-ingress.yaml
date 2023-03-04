@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: b2brp-backend
+  namespace: b2brp
+  labels:
+    name: b2brp-backend
+spec:
+  rules:
+    - host: b2brp-api.mucks.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: b2brp-backend-svc
+                port:
+                  number: 4000

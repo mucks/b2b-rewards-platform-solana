@@ -16,3 +16,5 @@ target/
 node_modules
 
 .env
+
+kubernetes/b2brp-backend-secret.yaml
