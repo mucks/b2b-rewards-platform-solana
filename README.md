@@ -6,6 +6,7 @@
 * Frontend: Vue.js 3 with Vuetify
 * Backend: Rust with Actix-web and Diesel
 * Database: Postgresql
+* Database Schema Design: Prisma
 * Deployment: Kubernetes
 * Contracts: Anchor
 * Blockchain: Solana
