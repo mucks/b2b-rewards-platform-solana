@@ -31,6 +31,6 @@ COPY package.json package.json
 COPY prisma prisma
 RUN npm install
 
-COPY --from=builder /app/target/release/otalp_backend /app/b2brp_backend
+COPY --from=builder /app/target/release/b2brp_backend /app/b2brp_backend
 COPY entrypoint.sh entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
