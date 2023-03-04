@@ -14,7 +14,7 @@ COPY Cargo.toml .
 RUN cargo build --release
 
 RUN rm -r src
-RUN rm ./target/release/deps/otalp_backend*
+RUN rm ./target/release/deps/b2brp_backend*
 COPY src src
 RUN cargo build --release
 
@@ -31,6 +31,6 @@ COPY package.json package.json
 COPY prisma prisma
 RUN npm install
 
-COPY --from=builder /app/target/release/otalp_backend /app/otalp_backend
+COPY --from=builder /app/target/release/otalp_backend /app/b2brp_backend
 COPY entrypoint.sh entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
