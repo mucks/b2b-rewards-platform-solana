@@ -1,13 +1,17 @@
 <template>
-  <div>
-    <h1>Sign Up</h1>
-    <v-form @submit.prevent="submit">
-      <v-text-field label="Name" v-model="dto.name" />
-      <v-text-field type="email" label="Email" v-model="dto.email" />
-      <v-text-field type="password" label="Password" v-model="dto.password" />
-      <v-btn type="submit">Submit</v-btn>
-    </v-form>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col md="3">
+        <h1>Sign Up</h1>
+        <v-form @submit.prevent="submit">
+          <v-text-field label="Name" v-model="dto.name" />
+          <v-text-field type="email" label="Email" v-model="dto.email" />
+          <v-text-field type="password" label="Password" v-model="dto.password" />
+          <v-btn type="submit">Submit</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">

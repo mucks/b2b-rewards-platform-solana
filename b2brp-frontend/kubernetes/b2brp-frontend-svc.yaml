@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: b2brp-frontend-svc
+  namespace: b2brp
+spec:
+  selector:
+    app: b2brp-frontend
+  ports:
+    - port: 80
+      name: http
