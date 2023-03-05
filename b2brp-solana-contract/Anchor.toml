@@ -2,13 +2,13 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-b2brp_solana_contract = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+b2brp_solana_contract = "3EMMqhy7w8PYobaxMfxhH6CMjxPgpVmdCZZSq2Pt2oys"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "/home/mucks/.config/solana/id.json"
 
 [scripts]
