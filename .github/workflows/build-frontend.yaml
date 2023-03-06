@@ -13,12 +13,12 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "b2brp-frontend/**"
+      - "gratie-frontend/**"
       - ".github/workflows/build-frontend.yaml"
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mucks/b2brp-frontend
+  IMAGE_NAME: mucks/gratie-frontend
 
 jobs:
   build-and-push-image:
@@ -47,7 +47,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./b2brp-frontend
+          context: ./gratie-frontend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

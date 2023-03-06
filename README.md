@@ -1,6 +1,10 @@
 # B2B Rewards Platform for Solana Hackathon
 
 
+## NOTE:
+
+* the backend is currently a placeholder and not needed
+
 ## Architecture
 
 * Frontend: Vue.js 3 with Vuetify

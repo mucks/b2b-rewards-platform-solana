@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAuthStore } from '@/stores/AuthStore';
+import { useAuthStore } from '@/store/AuthStore';
 import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { RequestHandler } from './handlers/RequestHandler';

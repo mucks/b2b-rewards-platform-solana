@@ -1,17 +1,21 @@
 <template>
   <div class="mx-2">
-    <v-btn v-if="wallet" variant="flat" color="success" :disabled="true">{{ walletShort }}</v-btn>
+    <v-btn v-if="store.isWalletConnected" variant="flat" color="success" :disabled="true">{{ walletShort
+    }}</v-btn>
     <v-btn variant="flat" v-else @click="connectWallet">Connect Wallet</v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useWalletStore } from '@/store/WalletStore';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
-const wallet = ref(null as null | string);
+const store = useWalletStore();
+
 
 const walletShort = computed(() => {
-  return wallet.value?.substring(1, 4) + '...' + wallet.value?.substring(wallet.value.length - 4, wallet.value.length);
+  const len = store.wallet.length;
+  return store.wallet?.substring(1, 4) + '...' + store.wallet?.substring(len - 4, len);
 });
 
 
@@ -26,7 +30,7 @@ const connectWallet = async () => {
   if (solana) {
     const response = await solana.connect();
     console.log("connected with public key");
-    wallet.value = response.publicKey.toString();
+    store.setWallet(response.publicKey.toString());
   }
 }
 
@@ -37,7 +41,7 @@ const checkWallet = async () => {
       console.log('Phantom wallet is installed');
       const response = await solana.connect({ onlyIfTrusted: true });
       console.log('connected with public key:', response.publicKey.toString());
-      wallet.value = response.publicKey.toString();
+      store.setWallet(response.publicKey.toString());
     } else {
       console.log('Phantom wallet is not installed');
     }

@@ -6,9 +6,10 @@ use mpl_token_metadata::instruction::{create_master_edition_v3, create_metadata_
 
 declare_id!("66oo66h8fF83T5ttnBLHbuaBesy6WRNFDhpsVPQUvsis");
 
-// Why is rust showing an error here?
+// Why is rust showing an error here but compiling successfully?
 #[program]
 pub mod gratie_company_license_nft {
+
     use super::*;
 
     pub fn mint_nft(
@@ -75,7 +76,9 @@ pub mod gratie_company_license_nft {
             ),
             account_info.as_slice(),
         )?;
+
         msg!("Metadata Account Created !!!");
+
         let master_edition_infos = vec![
             ctx.accounts.master_edition.to_account_info(),
             ctx.accounts.mint.to_account_info(),
@@ -87,7 +90,9 @@ pub mod gratie_company_license_nft {
             ctx.accounts.system_program.to_account_info(),
             ctx.accounts.rent.to_account_info(),
         ];
+
         msg!("Master Edition Account Infos Assigned");
+
         invoke(
             &create_master_edition_v3(
                 ctx.accounts.token_metadata_program.key(),
@@ -101,6 +106,7 @@ pub mod gratie_company_license_nft {
             ),
             master_edition_infos.as_slice(),
         )?;
+
         msg!("Master Edition Nft Minted !!!");
 
         Ok(())
