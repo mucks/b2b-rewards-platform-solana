@@ -1,28 +1,28 @@
 use anchor_lang::prelude::*;
+
+use anchor_lang::solana_program::{native_token::LAMPORTS_PER_SOL, program::invoke};
+use anchor_lang::system_program;
+use anchor_spl::{
+    associated_token,
+    token::{initialize_mint, InitializeMint},
+};
 use anchor_spl::{
     associated_token::AssociatedToken,
     token::{mint_to, MintTo, Token},
 };
+use mpl_token_metadata::{
+    instruction::{create_master_edition_v3, create_metadata_accounts_v3},
+    ID as TOKEN_METADATA_ID,
+};
 
-declare_id!("3EMMqhy7w8PYobaxMfxhH6CMjxPgpVmdCZZSq2Pt2oys");
-
-// TODO: improve comments and readability
+declare_id!("J1Aytbfp4K5dE2DzXefJbxta8EDj4Zp6zxdV6QEDMxDo");
 
 #[program]
-pub mod b2brp_solana_contract {
-    // use anchor_lang::solana_program::system_program;
-    use anchor_lang::solana_program::{native_token::LAMPORTS_PER_SOL, program::invoke};
-    use anchor_lang::system_program;
-    use anchor_spl::{
-        associated_token,
-        token::{initialize_mint, InitializeMint},
-    };
-    use mpl_token_metadata::instruction::{create_master_edition_v3, create_metadata_accounts_v3};
-
+pub mod mint_nft {
     use super::*;
 
-    pub fn mint_company_license(
-        ctx: Context<MintCompanyLicense>,
+    pub fn mint_nft(
+        ctx: Context<Mint>,
         metadata_title: String,
         metadata_symbol: String,
         metadata_uri: String,
@@ -72,6 +72,7 @@ pub mod b2brp_solana_contract {
                 mint: ctx.accounts.mint.to_account_info(),
                 system_program: ctx.accounts.system_program.to_account_info(),
                 token_program: ctx.accounts.token_program.to_account_info(),
+                rent: ctx.accounts.rent.to_account_info(),
             },
         ))?;
 
@@ -96,7 +97,7 @@ pub mod b2brp_solana_contract {
 
         invoke(
             &create_metadata_accounts_v3(
-                ID,
+                TOKEN_METADATA_ID,
                 ctx.accounts.metadata.key(),
                 ctx.accounts.mint.key(),
                 ctx.accounts.mint_authority.key(),
@@ -153,18 +154,10 @@ pub mod b2brp_solana_contract {
 
         Ok(())
     }
-
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
-    }
-
-    pub fn create(ctx: Context<Create>) -> Result<()> {
-        Ok(())
-    }
 }
 
 #[derive(Accounts)]
-pub struct MintCompanyLicense<'info> {
+pub struct Mint<'info> {
     /// CHECK: We're about to create this with Metaplex
     #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
@@ -191,54 +184,3 @@ pub struct MintCompanyLicense<'info> {
     /// CHECK: We're about to create this with Metaplex
     pub token_metadata_program: UncheckedAccount<'info>,
 }
-
-#[derive(Accounts)]
-pub struct Create<'info> {
-    #[account(init, payer = user, space=264)]
-    pub sp_rewards_container: Account<'info, SpRewardsContainer>,
-
-    #[account(init, payer = user, space=264)]
-    pub company_token_supply: Account<'info, CompanyTokenSupply>,
-
-    #[account(init, payer = user, space=264)]
-    pub company_license: Account<'info, CompanyLicense>,
-
-    #[account(mut)]
-    pub user: Signer<'info>,
-
-    pub system_program: Program<'info, System>,
-}
-
-// ERC-721 contract for the Enterprise License
-#[account]
-pub struct CompanyLicense {
-    pub user: Pubkey,
-    pub company_name: String,
-    pub company_details: String,
-    pub company_logo: String,
-    pub rarity: u8,
-    pub upper_credit_limit: u64,
-}
-
-// ERC-20 contract for the Enterprise Supply of Tokens
-#[account]
-pub struct CompanyTokenSupply {
-    pub user: Pubkey,
-    pub amount: u64,
-}
-
-// ERC-1155 contract for the Service Providers
-#[account]
-pub struct SpRewardsContainer {
-    pub user: Pubkey,
-    pub amount: u64,
-}
-
-#[error_code]
-pub enum ErrorCode {
-    #[msg("Mint failed!")]
-    MintFailed,
-}
-
-#[derive(Accounts)]
-pub struct Initialize {}

@@ -1,8 +1,8 @@
 [features]
 seeds = false
 skip-lint = false
-[programs.localnet]
-b2brp_solana_contract = "3EMMqhy7w8PYobaxMfxhH6CMjxPgpVmdCZZSq2Pt2oys"
+[programs.devnet]
+mint_nft = "J1Aytbfp4K5dE2DzXefJbxta8EDj4Zp6zxdV6QEDMxDo"
 
 [registry]
 url = "https://api.apr.dev"
