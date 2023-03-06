@@ -11,6 +11,7 @@ import { RequestHandler } from './handlers/RequestHandler';
 const auth = useAuthStore();
 const router = useRouter();
 
+// Placeholder if using backend
 const checkAuth = async () => {
   try {
     await RequestHandler.get('/api/test');
@@ -21,6 +22,6 @@ const checkAuth = async () => {
 }
 
 onMounted(async () => {
-  await checkAuth();
+  // await checkAuth();
 });
 </script>
